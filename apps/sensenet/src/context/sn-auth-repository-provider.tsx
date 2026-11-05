@@ -135,47 +135,56 @@ export function SnAuthRepositoryProvider({
     }
   }, [url])
 
-  const getConfig = useCallback(async () => {
-    if (!authState.repoUrl) {
-      setIsLoginInProgress(false)
-      return
-    }
-    try {
-      setIsLoginInProgress(true)
-      const boundCallback = window.location.pathname === callbackUri && callbackEntry?.config
-      if (!boundCallback && !(await prepareAuthentication(authState.repoUrl))) return
-      setAuthenticationCheckedFor(authState.repoUrl)
-      const storedConfig = boundCallback || getSnAuthRepositoryConfig(authState.repoUrl)
-
-      if (storedConfig) {
-        setAuthServerUrl(storedConfig.userManagerSettings.authority)
-        window.localStorage.setItem(authConfigKey, JSON.stringify(storedConfig))
-        setAuthState((oldState) => ({ ...oldState, config: storedConfig.userManagerSettings }))
+  const getConfig = useCallback(
+    async (isCurrent: () => boolean) => {
+      if (!authState.repoUrl) {
+        setIsLoginInProgress(false)
         return
       }
+      try {
+        setIsLoginInProgress(true)
+        const boundCallback = window.location.pathname === callbackUri && callbackEntry?.config
+        if (!boundCallback && !(await prepareAuthentication(authState.repoUrl))) return
+        if (!isCurrent()) return
+        setAuthenticationCheckedFor(authState.repoUrl)
+        const storedConfig = boundCallback || getSnAuthRepositoryConfig(authState.repoUrl)
 
-      const config = await getAuthConfig(authState.repoUrl)
-      if (config.authServerSettings.type === 'SNAuth') {
-        setSnAuthRepositoryConfig(authState.repoUrl, config)
-        setConfigString(window.localStorage.getItem(authConfigKey))
-        setAuthState((oldState) => ({ ...oldState, config: config.userManagerSettings }))
-      } else {
-        changeAuthType(authState.repoUrl)
-        logger.error({ message: 'Incompatible authentication server type' })
+        if (storedConfig) {
+          setAuthServerUrl(storedConfig.userManagerSettings.authority)
+          window.localStorage.setItem(authConfigKey, JSON.stringify(storedConfig))
+          setAuthState((oldState) => ({ ...oldState, config: storedConfig.userManagerSettings }))
+          return
+        }
+
+        const config = await getAuthConfig(authState.repoUrl)
+        if (!isCurrent()) return
+        if (config.authServerSettings.type === 'SNAuth') {
+          setSnAuthRepositoryConfig(authState.repoUrl, config)
+          setConfigString(window.localStorage.getItem(authConfigKey))
+          setAuthState((oldState) => ({ ...oldState, config: config.userManagerSettings }))
+        } else if (config.authServerSettings.type === 'IdentityServer') {
+          // Provider discovery is a normal handoff, not a failed sign-in.
+          clearActiveRepositorySelection()
+          changeAuthType(authState.repoUrl)
+        } else throw new Error('Unsupported authentication server type')
+      } catch (error) {
+        if (!isCurrent()) return
+        logger.warning({ data: error, message: `Couldn't connect to ${authState.repoUrl}` })
         clearActiveRepositorySelection()
         setAuthState((oldState) => ({ ...oldState, repoUrl: '' }))
+      } finally {
+        if (isCurrent()) setIsLoginInProgress(false)
       }
-    } catch (error) {
-      logger.warning({ data: error, message: `Couldn't connect to ${authState.repoUrl}` })
-      clearActiveRepositorySelection()
-      setAuthState((oldState) => ({ ...oldState, repoUrl: '' }))
-    } finally {
-      setIsLoginInProgress(false)
-    }
-  }, [logger, authState.repoUrl, changeAuthType, prepareAuthentication])
+    },
+    [logger, authState.repoUrl, changeAuthType, prepareAuthentication],
+  )
 
   useEffect(() => {
-    getConfig()
+    let active = true
+    getConfig(() => active)
+    return () => {
+      active = false
+    }
   }, [getConfig])
 
   if (callbackError) {

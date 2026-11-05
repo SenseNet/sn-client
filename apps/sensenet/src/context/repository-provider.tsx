@@ -73,38 +73,49 @@ export function RepositoryProvider({
     }
   }, [url])
 
-  const getConfig = useCallback(async () => {
-    if (!authState.repoUrl) {
-      setIsLoginInProgress(false)
-      return
-    }
-    try {
-      setIsLoginInProgress(true)
-      if (!(await prepareAuthentication(authState.repoUrl))) return
-      setAuthenticationCheckedFor(authState.repoUrl)
-      const config = await getAuthConfig(authState.repoUrl)
-      if (config.authServerSettings.type !== 'IdentityServer') {
-        changeAuthType(authState.repoUrl)
-        logger.error({ message: 'Incompatible authentication server type' })
-        clearActiveRepositorySelection()
-        setAuthState((oldState) => ({ ...oldState, repoUrl: '' }))
+  const getConfig = useCallback(
+    async (isCurrent: () => boolean) => {
+      if (!authState.repoUrl) {
+        setIsLoginInProgress(false)
         return
       }
+      try {
+        setIsLoginInProgress(true)
+        if (!(await prepareAuthentication(authState.repoUrl))) return
+        if (!isCurrent()) return
+        setAuthenticationCheckedFor(authState.repoUrl)
+        const config = await getAuthConfig(authState.repoUrl)
+        if (!isCurrent()) return
+        if (config.authServerSettings.type === 'SNAuth') {
+          // Clear the old selection before the next provider creates its login intent.
+          clearActiveRepositorySelection()
+          changeAuthType(authState.repoUrl)
+          return
+        }
+        if (config.authServerSettings.type !== 'IdentityServer')
+          throw new Error('Unsupported authentication server type')
 
-      window.localStorage.setItem(authConfigKey, JSON.stringify(config))
-      // Set only userManagerSettings in authState to match the expected type
-      setAuthState((oldState) => ({ ...oldState, config: config.userManagerSettings }))
-    } catch (error) {
-      logger.warning({ data: error, message: `Couldn't connect to ${authState.repoUrl}` })
-      clearActiveRepositorySelection()
-      setAuthState((oldState) => ({ ...oldState, repoUrl: '' }))
-    } finally {
-      setIsLoginInProgress(false)
-    }
-  }, [logger, authState.repoUrl, changeAuthType, prepareAuthentication])
+        window.localStorage.setItem(authConfigKey, JSON.stringify(config))
+        // Set only userManagerSettings in authState to match the expected type
+        setAuthState((oldState) => ({ ...oldState, config: config.userManagerSettings }))
+      } catch (error) {
+        if (!isCurrent()) return
+        logger.warning({ data: error, message: `Couldn't connect to ${authState.repoUrl}` })
+        clearActiveRepositorySelection()
+        setAuthState((oldState) => ({ ...oldState, repoUrl: '' }))
+      } finally {
+        if (isCurrent()) setIsLoginInProgress(false)
+      }
+    },
+    [logger, authState.repoUrl, changeAuthType, prepareAuthentication],
+  )
 
   useEffect(() => {
-    getConfig()
+    let active = true
+    getConfig(() => active)
+    return () => {
+      active = false
+    }
   }, [getConfig])
 
   if (authState.repoUrl && authenticationCheckedFor !== authState.repoUrl)
