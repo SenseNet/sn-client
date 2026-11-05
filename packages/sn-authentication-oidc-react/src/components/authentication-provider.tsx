@@ -1,8 +1,9 @@
 import { History } from 'history'
-import { User, UserManagerSettings } from 'oidc-client'
+import { User, UserManager, UserManagerSettings } from 'oidc-client'
 import React, { createContext, ElementType, ReactNode, useCallback, useEffect, useReducer } from 'react'
 import { authenticationService } from '../authentication-service'
-import { addOidcEvents, logout, login as oidcLogin, oidcReducer, removeOidcEvents } from '../oidc-events'
+import { addOidcEvents, AuthenticationErrorOperation, logout, login as oidcLogin, oidcReducer } from '../oidc-events'
+import { coordinateUserManager } from '../user-manager-lifecycle'
 import { CallbackContainer } from './callback'
 import { OidcRoutes } from './oidc-routes'
 import { SessionLostContainer, SessionLostProps } from './session-lost'
@@ -12,6 +13,7 @@ export interface AuthenticationContextState {
   authenticating?: ReactNode
   oidcUser?: User
   error?: string
+  errorOperation?: AuthenticationErrorOperation
   login: () => Promise<void>
   logout: () => Promise<void>
 }
@@ -47,27 +49,46 @@ export interface AuthenticationProviderProps {
   customEvents?: CustomEvents
 }
 
-const setDefaultState = (configuration: UserManagerSettings) => ({
-  userManager: authenticationService(configuration),
-  isLoading: false,
-})
+const setDefaultState = (configuration: UserManagerSettings) => {
+  const userManager = authenticationService(configuration)
+  return {
+    userManager: userManager instanceof UserManager ? coordinateUserManager(userManager, configuration) : userManager,
+    isLoading: false,
+  }
+}
 
 export const AuthenticationProvider = (props: AuthenticationProviderProps) => {
   const [oidcState, dispatch] = useReducer(oidcReducer, setDefaultState(props.configuration))
 
   useEffect(() => {
+    let active = true
+    let eventRevision = 0
     dispatch({ type: 'ON_LOADING' })
-    addOidcEvents({ customEvents: props.customEvents, dispatch, userManager: oidcState.userManager })
-    oidcState.userManager.getUser().then((user) => {
-      if (!user) {
-        return
-      }
-      dispatch({ type: 'ON_LOAD_USER', user })
+    const dispose = addOidcEvents({
+      customEvents: props.customEvents,
+      dispatch: (action) => {
+        if (!active) return
+        eventRevision++
+        dispatch(action)
+      },
+      userManager: oidcState.userManager,
     })
-    return () => removeOidcEvents({ customEvents: props.customEvents, dispatch, userManager: oidcState.userManager })
+    oidcState.userManager
+      .getUser()
+      .then((user) => {
+        if (!active || eventRevision) return
+        dispatch(user ? { type: 'ON_LOAD_USER', user } : { type: 'ON_UNLOAD_USER' })
+      })
+      .catch((error) => {
+        if (active && !eventRevision) dispatch({ type: 'ON_ERROR', message: error.message, operation: 'login' })
+      })
+    return () => {
+      active = false
+      dispose()
+    }
   }, [oidcState.userManager, props.customEvents])
 
-  const { oidcUser, isLoading, error } = oidcState
+  const { oidcUser, isLoading, error, errorOperation } = oidcState
   const {
     authenticating,
     notAuthenticated,
@@ -90,6 +111,7 @@ export const AuthenticationProvider = (props: AuthenticationProviderProps) => {
         isLoading,
         oidcUser,
         error,
+        errorOperation,
         authenticating: authenticating?.(),
         login,
         logout: useCallback(() => logout(oidcState.userManager, dispatch)(), [oidcState.userManager]),

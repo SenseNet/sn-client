@@ -32,6 +32,7 @@ export function LocalRepositoryProvider({
   const [error, setError] = useState('')
   const [chooseRepository, setChooseRepository] = useState(!repoUrl)
   const mounted = useRef(true)
+  const activeSession = useRef<LocalRepositorySession>()
   const [resetToken, setResetToken] = useState(() => {
     if (initialResetToken) return initialResetToken
     const location = new URL(window.location.href)
@@ -54,6 +55,7 @@ export function LocalRepositoryProvider({
   }
 
   const loadUser = async (current: LocalRepositorySession) => {
+    const { revision } = current
     const repo = new Repository(
       {
         repositoryUrl: current.repositoryUrl,
@@ -76,6 +78,7 @@ export function LocalRepositoryProvider({
       current.fetch,
     )
     current.onChange = () => {
+      if (!mounted.current || activeSession.current !== current) return
       repo.configuration.token = current.accessToken
       if (!current.hasSession && mounted.current) {
         setUser(undefined)
@@ -88,16 +91,19 @@ export function LocalRepositoryProvider({
     const result = await response.json()
     if (String(result.d?.Id) !== current.subject) throw new Error('Could not identify your account.')
     await repo.reloadSchema()
-    if (mounted.current) {
+    if (mounted.current && activeSession.current === current && current.revision === revision && current.hasSession) {
       setRepository(repo)
       setUser(result.d)
+      return true
     }
+    return false
   }
 
   useEffect(() => {
     mounted.current = true
     let active = true
     const abort = new AbortController()
+    let current: LocalRepositorySession | undefined
     setUser(undefined)
     setRepository(undefined)
     setSession(undefined)
@@ -113,7 +119,8 @@ export function LocalRepositoryProvider({
         if (!capabilities?.local)
           throw new Error('Internal authentication is unavailable for this repository or network.')
         if (!active) return
-        const current = new LocalRepositorySession(repoUrl, capabilities.local)
+        current = new LocalRepositorySession(repoUrl, capabilities.local)
+        activeSession.current = current
         setSession(current)
         if (current.hasSession && !enteredWithReset) await loadUser(current)
       } catch {
@@ -126,6 +133,8 @@ export function LocalRepositoryProvider({
       active = false
       mounted.current = false
       abort.abort()
+      current?.dispose()
+      if (activeSession.current === current) activeSession.current = undefined
     }
   }, [repoUrl, enteredWithReset])
 
@@ -145,15 +154,18 @@ export function LocalRepositoryProvider({
               setRepository(undefined)
             },
             logout: async () => {
+              const pending = session.logout()
+              const { revision } = session
               try {
-                await session.logout()
+                await pending
               } catch {
-                if (mounted.current) setError('Signed out locally. Server revocation could not be confirmed.')
-              } finally {
-                if (mounted.current) {
-                  setUser(undefined)
-                  setRepository(undefined)
-                }
+                if (
+                  mounted.current &&
+                  activeSession.current === session &&
+                  session.revision === revision &&
+                  !session.hasSession
+                )
+                  setError('Signed out locally. Server revocation could not be confirmed.')
               }
             },
           }}>
@@ -174,8 +186,7 @@ export function LocalRepositoryProvider({
       onAuthenticated={async () => {
         if (session) {
           setError('')
-          await loadUser(session)
-          finishReset()
+          if (await loadUser(session)) finishReset()
         }
       }}
       onChooseRepository={() => setChooseRepository(true)}

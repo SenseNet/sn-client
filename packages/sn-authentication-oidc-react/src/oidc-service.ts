@@ -1,6 +1,7 @@
 import { History, Location } from 'history'
 import { User, UserManager } from 'oidc-client'
 import { removeUserManager } from './authentication-service'
+import { isSupersededOidcOperation, runOidcLogout } from './user-manager-lifecycle'
 
 let userRequested = false
 let numberAuthentication = 0
@@ -23,7 +24,7 @@ export const authenticateUser =
       try {
         await userManager.signinRedirect({ data: { url } })
       } catch (error) {
-        removeUserManager()
+        if (!isSupersededOidcOperation(error)) removeUserManager()
         throw error
       } finally {
         userRequested = false
@@ -33,20 +34,22 @@ export const authenticateUser =
       try {
         await userManager.signinSilent()
       } catch (error) {
+        if (isSupersededOidcOperation(error)) throw error
         if (numberAuthentication <= 1) {
           await userManager.signinRedirect({ data: { url } })
         } else {
           userRequested = false
           history.push(`/authentication/session-lost?path=${encodeURI(url)}`)
         }
+      } finally {
+        userRequested = false
       }
-      userRequested = false
     }
   }
 
-export const logoutUser = async (userManager: UserManager) => {
-  const oidcUser = await userManager.getUser()
-  if (oidcUser) {
-    await userManager.signoutRedirect()
-  }
-}
+export const logoutUser = async (userManager: UserManager) =>
+  runOidcLogout(userManager, async (ensureCurrent) => {
+    const oidcUser = await userManager.getUser()
+    ensureCurrent()
+    if (oidcUser) await userManager.signoutRedirect()
+  })

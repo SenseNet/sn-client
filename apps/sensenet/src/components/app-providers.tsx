@@ -59,8 +59,15 @@ export default function AppProviders({ children }: AppProvidersProps) {
   })
   // Retain only the initial destination for startup routing, never a consumed token.
   const initialResetRepository = useRef(resetLink?.repositoryUrl).current
+  // This callback path belongs to SNAuth. Another tab may have changed the global
+  // mode meanwhile; the SNAuth wrapper validates its tab-local state before use.
+  const initialSnAuthCallback = useRef(window.location.pathname === '/authentication/callback').current
   const [authType, setAuthType] = useState<AuthServerType>(
-    resetLink ? 'Local' : (window.localStorage.getItem('authType') as AuthServerType) ?? defaultAuthConfig.authType,
+    resetLink
+      ? 'Local'
+      : initialSnAuthCallback
+      ? 'SNAuth'
+      : (window.localStorage.getItem('authType') as AuthServerType) ?? defaultAuthConfig.authType,
   )
   const [url, setUrl] = useState(resetLink?.repositoryUrl || '')
   const [choice, setChoice] = useState<string>()
@@ -104,7 +111,9 @@ export default function AppProviders({ children }: AppProvidersProps) {
     clearActiveRepositorySelection()
     startSnAuthRepositoryLogin(normalized)
     setChoice(undefined)
-    setAuthType(defaultAuthConfig.authType === 'Local' ? 'SNAuth' : defaultAuthConfig.authType)
+    const externalAuthType = defaultAuthConfig.authType === 'Local' ? 'SNAuth' : defaultAuthConfig.authType
+    window.localStorage.setItem('authType', externalAuthType)
+    setAuthType(externalAuthType)
     setUrl(normalized)
   }, [])
 
@@ -135,6 +144,7 @@ export default function AppProviders({ children }: AppProvidersProps) {
   )
 
   useEffect(() => {
+    if (initialSnAuthCallback) return
     const location = new URL(window.location.href)
     const repoUrl =
       location.searchParams.get('repoUrl') || (/^\/login\/?$/.test(location.pathname) ? location.origin : '')
@@ -142,7 +152,7 @@ export default function AppProviders({ children }: AppProvidersProps) {
       if (initialResetRepository) selectLocal(initialResetRepository)
       else selectRepository(repoUrl)
     }
-  }, [selectRepository, selectLocal, initialResetRepository])
+  }, [selectRepository, selectLocal, initialResetRepository, initialSnAuthCallback])
 
   snInjector
     .getInstance(CommandProviderManager)

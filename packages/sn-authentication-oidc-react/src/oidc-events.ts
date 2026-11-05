@@ -3,9 +3,12 @@ import { User, UserManager } from 'oidc-client'
 import { Dispatch } from 'react'
 import { CustomEvents } from './components/authentication-provider'
 import { authenticateUser, logoutUser } from './oidc-service'
+import { isSupersededOidcOperation } from './user-manager-lifecycle'
+
+export type AuthenticationErrorOperation = 'login' | 'logout' | 'refresh'
 
 type Action =
-  | { type: 'ON_ERROR'; message: string }
+  | { type: 'ON_ERROR'; message: string; operation?: AuthenticationErrorOperation }
   | { type: 'ON_LOADING' }
   | { type: 'ON_LOAD_USER'; user: User }
   | { type: 'ON_UNLOAD_USER' }
@@ -15,18 +18,19 @@ type State = {
   userManager: UserManager
   isLoading: boolean
   error?: string
+  errorOperation?: AuthenticationErrorOperation
 }
 
 export const oidcReducer = (state: State, action: Action) => {
   switch (action.type) {
     case 'ON_ERROR':
-      return { ...state, error: action.message, isLoading: false }
+      return { ...state, error: action.message, errorOperation: action.operation, isLoading: false }
     case 'ON_LOADING':
-      return { ...state, isLoading: true }
+      return { ...state, error: undefined, errorOperation: undefined, isLoading: true }
     case 'ON_LOAD_USER':
-      return { ...state, oidcUser: action.user, isLoading: false }
+      return { ...state, oidcUser: action.user, error: undefined, errorOperation: undefined, isLoading: false }
     case 'ON_UNLOAD_USER':
-      return { ...state, oidcUser: undefined, isLoading: false }
+      return { ...state, oidcUser: undefined, error: undefined, errorOperation: undefined, isLoading: false }
     default:
       return state
   }
@@ -36,18 +40,23 @@ export const logout = (userManager: UserManager, dispatch: Dispatch<Action>) => 
   try {
     await logoutUser(userManager)
   } catch (error) {
-    onError(dispatch, error)
+    if (!isSupersededOidcOperation(error)) onError(dispatch, error, 'logout')
   }
 }
 
 export const login =
   (userManager: UserManager, dispatch: Dispatch<Action>, location: Location, history: History) => async () => {
     dispatch({ type: 'ON_LOADING' })
-    await authenticateUser(userManager, location, history)()
+    try {
+      await authenticateUser(userManager, location, history)()
+    } catch (error) {
+      if (!isSupersededOidcOperation(error)) onError(dispatch, error, 'login')
+      throw error
+    }
   }
 
-export const onError = (dispatch: Dispatch<Action>, error: Error) => {
-  dispatch({ type: 'ON_ERROR', message: error.message })
+export const onError = (dispatch: Dispatch<Action>, error: Error, operation?: AuthenticationErrorOperation) => {
+  dispatch({ type: 'ON_ERROR', message: error.message, ...(operation ? { operation } : {}) })
 }
 
 export const onUserLoaded = (dispatch: Dispatch<Action>, user: User) => {
@@ -69,27 +78,45 @@ type oidcEventsOptions = {
   userManager: UserManager
 }
 
+type OidcSubscription = oidcEventsOptions & { dispose: () => void }
+const subscriptions = new WeakMap<UserManager, Set<OidcSubscription>>()
+
 export const addOidcEvents = ({ dispatch, userManager, customEvents }: oidcEventsOptions) => {
-  userManager.events.addUserLoaded((user) => {
+  let disposed = false
+  let revision = 0
+  const userLoaded = (user: User) => {
+    revision++
     customEvents?.onUserLoaded?.(user)
     onUserLoaded(dispatch, user)
-  })
-  userManager.events.addSilentRenewError((error) => {
+  }
+  const silentRenewError = (error: Error) => {
+    if (isSupersededOidcOperation(error)) return
     customEvents?.onSilentRenewError?.(error)
-    onError(dispatch, error)
-  })
-  userManager.events.addUserUnloaded(() => {
+    onError(dispatch, error, 'refresh')
+  }
+  const userUnloaded = () => {
+    revision++
     customEvents?.onUserUnloaded?.()
     onUserUnloaded(dispatch)
-  })
-  userManager.events.addUserSignedOut(() => {
+  }
+  const userSignedOut = () => {
+    revision++
     customEvents?.onUserSignedOut?.()
     onUserUnloaded(dispatch)
-  })
-  userManager.events.addAccessTokenExpired(() => {
+  }
+  const accessTokenExpired = () => {
+    const startedAt = ++revision
     customEvents?.onAccessTokenExpired?.()
-    onAccessTokenExpired(dispatch, userManager)
-  })
+    onAccessTokenExpired(dispatch, userManager).catch((error) => {
+      if (!disposed && revision === startedAt && !isSupersededOidcOperation(error)) onError(dispatch, error, 'refresh')
+    })
+  }
+
+  userManager.events.addUserLoaded(userLoaded)
+  userManager.events.addSilentRenewError(silentRenewError)
+  userManager.events.addUserUnloaded(userUnloaded)
+  userManager.events.addUserSignedOut(userSignedOut)
+  userManager.events.addAccessTokenExpired(accessTokenExpired)
 
   if (customEvents?.onAccessTokenExpiring) {
     userManager.events.addAccessTokenExpiring(customEvents.onAccessTokenExpiring)
@@ -97,35 +124,40 @@ export const addOidcEvents = ({ dispatch, userManager, customEvents }: oidcEvent
   if (customEvents?.onUserSessionChanged) {
     userManager.events.addUserSessionChanged(customEvents.onUserSessionChanged)
   }
+
+  let managerSubscriptions = subscriptions.get(userManager)
+  if (!managerSubscriptions) {
+    managerSubscriptions = new Set()
+    subscriptions.set(userManager, managerSubscriptions)
+  }
+  const subscription: OidcSubscription = {
+    dispatch,
+    userManager,
+    customEvents,
+    dispose: () => {
+      if (disposed) return
+      disposed = true
+      userManager.events.removeUserLoaded(userLoaded)
+      userManager.events.removeSilentRenewError(silentRenewError)
+      userManager.events.removeUserUnloaded(userUnloaded)
+      userManager.events.removeUserSignedOut(userSignedOut)
+      userManager.events.removeAccessTokenExpired(accessTokenExpired)
+      if (customEvents?.onAccessTokenExpiring) {
+        userManager.events.removeAccessTokenExpiring(customEvents.onAccessTokenExpiring)
+      }
+      if (customEvents?.onUserSessionChanged) {
+        userManager.events.removeUserSessionChanged(customEvents.onUserSessionChanged)
+      }
+      managerSubscriptions!.delete(subscription)
+      if (!managerSubscriptions!.size) subscriptions.delete(userManager)
+    },
+  }
+  managerSubscriptions.add(subscription)
+  return subscription.dispose
 }
 
 export const removeOidcEvents = ({ dispatch, userManager, customEvents }: oidcEventsOptions) => {
-  userManager.events.removeUserLoaded((user) => {
-    customEvents?.onUserLoaded?.(user)
-    onUserLoaded(dispatch, user)
-  })
-  userManager.events.removeSilentRenewError((error) => {
-    customEvents?.onSilentRenewError?.(error)
-    onError(dispatch, error)
-  })
-  userManager.events.removeUserUnloaded(() => {
-    customEvents?.onUserUnloaded?.()
-    onUserUnloaded(dispatch)
-  })
-  userManager.events.removeUserSignedOut(() => {
-    customEvents?.onUserSignedOut?.()
-    onUserUnloaded(dispatch)
-  })
-  userManager.events.removeAccessTokenExpired(() => {
-    customEvents?.onAccessTokenExpired?.()
-    onAccessTokenExpired(dispatch, userManager)
-  })
-
-  if (customEvents?.onAccessTokenExpiring) {
-    userManager.events.removeAccessTokenExpiring(customEvents.onAccessTokenExpiring)
-  }
-
-  if (customEvents?.onUserSessionChanged) {
-    userManager.events.removeUserSessionChanged(customEvents.onUserSessionChanged)
+  for (const subscription of subscriptions.get(userManager) ?? []) {
+    if (subscription.dispatch === dispatch && subscription.customEvents === customEvents) subscription.dispose()
   }
 }

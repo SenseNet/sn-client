@@ -181,19 +181,22 @@ describe('Authentication provider', () => {
       expect(userManagerMock.signinSilent).toHaveBeenCalled()
     })
 
-    it('should subscribe to remove all events when call removeOidcEvents', () => {
+    it('should unsubscribe the registered handlers without invoking custom callbacks', () => {
       const eventsMock = {
-        removeUserLoaded: (cb: (user: any) => void) => {
-          cb({ name: 'Jon' })
-        },
-        removeSilentRenewError: (cb: (error: any) => void) => {
-          cb({ message: 'error' })
-        },
-        removeUserUnloaded: (cb: () => void) => cb(),
-        removeUserSignedOut: (cb: () => void) => cb(),
-        removeAccessTokenExpired: (cb: () => void) => cb(),
-        removeAccessTokenExpiring: (cb: () => void) => cb(),
-        removeUserSessionChanged: (cb: () => void) => cb(),
+        addUserLoaded: jest.fn(),
+        addSilentRenewError: jest.fn(),
+        addUserUnloaded: jest.fn(),
+        addUserSignedOut: jest.fn(),
+        addAccessTokenExpired: jest.fn(),
+        addAccessTokenExpiring: jest.fn(),
+        addUserSessionChanged: jest.fn(),
+        removeUserLoaded: jest.fn(),
+        removeSilentRenewError: jest.fn(),
+        removeUserUnloaded: jest.fn(),
+        removeUserSignedOut: jest.fn(),
+        removeAccessTokenExpired: jest.fn(),
+        removeAccessTokenExpiring: jest.fn(),
+        removeUserSessionChanged: jest.fn(),
       }
       const customEvents: CustomEvents = {
         onUserLoaded: jest.fn(),
@@ -204,18 +207,27 @@ describe('Authentication provider', () => {
         onUserSignedOut: jest.fn(),
         onUserUnloaded: jest.fn(),
       }
-      removeOidcEvents({
+      const options = {
         userManager: { events: eventsMock, signinSilent: jest.fn() } as any,
         dispatch: jest.fn(),
         customEvents,
-      })
-      expect(customEvents.onUserLoaded).toHaveBeenCalledWith({ name: 'Jon' })
-      expect(customEvents.onAccessTokenExpired).toHaveBeenCalledTimes(1)
-      expect(customEvents.onAccessTokenExpiring).toHaveBeenCalledTimes(1)
-      expect(customEvents.onSilentRenewError).toHaveBeenCalledWith({ message: 'error' })
-      expect(customEvents.onUserSessionChanged).toHaveBeenCalledTimes(1)
-      expect(customEvents.onUserSignedOut).toHaveBeenCalledTimes(1)
-      expect(customEvents.onUserUnloaded).toHaveBeenCalledTimes(1)
+      }
+      addOidcEvents(options)
+      removeOidcEvents(options)
+      for (const event of [
+        'UserLoaded',
+        'SilentRenewError',
+        'UserUnloaded',
+        'UserSignedOut',
+        'AccessTokenExpired',
+        'AccessTokenExpiring',
+        'UserSessionChanged',
+      ]) {
+        expect((eventsMock as any)[`remove${event}`]).toHaveBeenCalledWith(
+          (eventsMock as any)[`add${event}`].mock.calls[0][0],
+        )
+      }
+      for (const callback of Object.values(customEvents)) expect(callback).not.toHaveBeenCalled()
     })
 
     it('should subscribe to add all events when call addOidcEvents', () => {
