@@ -9,6 +9,7 @@ import {
   LocalRepositorySession,
   localSelectedRepository,
 } from '../services/local-authentication'
+import { rememberRepositoryConnection } from '../services/repository-connections'
 import { AuthContext } from './auth-provider'
 
 export function LocalRepositoryProvider({
@@ -92,6 +93,7 @@ export function LocalRepositoryProvider({
     if (String(result.d?.Id) !== current.subject) throw new Error('Could not identify your account.')
     await repo.reloadSchema()
     if (mounted.current && activeSession.current === current && current.revision === revision && current.hasSession) {
+      rememberRepositoryConnection(current.repositoryUrl)
       setRepository(repo)
       setUser(result.d)
       return true
