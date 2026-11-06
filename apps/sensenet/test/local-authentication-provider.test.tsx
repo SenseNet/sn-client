@@ -4,6 +4,7 @@ import { act, Simulate } from 'react-dom/test-utils'
 import { AuthContext } from '../src/context/auth-provider'
 import { LocalRepositoryProvider } from '../src/context/local-repository-provider'
 import { localSessionKey } from '../src/services/local-authentication'
+import { getRepositoryConnections } from '../src/services/repository-connections'
 
 jest.mock('@sensenet/client-core', () => ({
   Repository: class {
@@ -27,6 +28,7 @@ jest.mock(
 )
 jest.mock('../src/services/repository-session', () => ({
   normalizeRepositoryUrl: (url: string) => url.replace(/\/$/, ''),
+  getSnAuthRepositorySessions: () => [],
 }))
 const repo = 'https://repo.example'
 const endpoints = {
@@ -54,6 +56,7 @@ const Probe = () => {
 let element: HTMLDivElement
 const previousFetch = global.fetch
 beforeEach(() => {
+  localStorage.clear()
   sessionStorage.clear()
   element = document.createElement('div')
   document.body.appendChild(element)
@@ -64,6 +67,7 @@ afterEach(() => {
   })
   element.remove()
   global.fetch = previousFetch
+  localStorage.clear()
 })
 const mount = (initialResetToken?: string) =>
   act(async () => {
@@ -96,6 +100,7 @@ it('submits explicit credentials/MFA, loads the repository identity and revokes 
     twoFactorCode: '123456',
   })
   expect(element.textContent).toContain('Signed in as admin')
+  expect(getRepositoryConnections()).toEqual([expect.objectContaining({ repoUrl: repo })])
   expect(sessionStorage.getItem(localSessionKey(repo, repo))).not.toContain('secret')
   await act(async () => {
     element.querySelector('button')!.click()
@@ -103,6 +108,7 @@ it('submits explicit credentials/MFA, loads the repository identity and revokes 
   expect(request.mock.calls[3][0]).toBe(repo + endpoints.logout)
   expect(element.textContent).not.toContain('Signed in as admin')
   expect(sessionStorage.getItem(localSessionKey(repo, repo))).toBeNull()
+  expect(getRepositoryConnections()).toEqual([expect.objectContaining({ repoUrl: repo })])
 })
 
 it('never renders authenticated content when a restored token resolves to Visitor', async () => {
@@ -114,6 +120,7 @@ it('never renders authenticated content when a restored token resolves to Visito
   await mount()
   expect(element.textContent).not.toContain('Signed in as')
   expect(element.querySelector('[role=alert]')).not.toBeNull()
+  expect(getRepositoryConnections()).toEqual([])
 })
 
 it('consumes the recovery fragment without restoring an existing session or storing its token', async () => {

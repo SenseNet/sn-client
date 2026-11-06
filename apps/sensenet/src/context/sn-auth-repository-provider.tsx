@@ -3,19 +3,19 @@ import { UserManagerSettings } from '@sensenet/authentication-oidc-react'
 import { Repository } from '@sensenet/client-core'
 import { RepositoryContext, useLogger } from '@sensenet/hooks-react'
 import { AuthenticationProvider, getPendingExternalLoginTarget, useSnAuth } from '@sensenet/sn-auth-react'
-import React, { lazy, ReactNode, Suspense, useCallback, useEffect, useState } from 'react'
+import React, { lazy, ReactNode, Suspense, useCallback, useEffect, useRef, useState } from 'react'
 import { FullScreenLoader } from '../components/full-screen-loader'
 import { AuthOverrideSkeleton } from '../components/login/auth-override-skeleton'
 import { NotificationComponent } from '../components/NotificationComponent'
 import { useGlobalStyles } from '../globalStyles'
 import { useQuery } from '../hooks'
 import { getAuthConfig } from '../services/auth-config'
+import { rememberRepositoryConnection } from '../services/repository-connections'
 import {
   clearActiveRepositorySelection,
   consumeSnAuthRepositoryLogin,
   getSelectedSnAuthRepository,
   getSnAuthRepositoryConfig,
-  getSnAuthRepositorySessions,
   getSnAuthStorageKeyPrefix,
   hasPendingSnAuthRepositoryLogin,
   migrateLegacySnAuthTokens,
@@ -45,6 +45,7 @@ export function SnAuthRepositoryProvider({
   prepareAuthentication: (repoUrl: string) => Promise<boolean>
 }) {
   const [isLoginInProgress, setIsLoginInProgress] = useState(false)
+  const [failedRepositoryUrl, setFailedRepositoryUrl] = useState('')
   const [authenticationCheckedFor, setAuthenticationCheckedFor] = useState('')
   const logger = useLogger('repository-provider')
   const globalClasses = useGlobalStyles()
@@ -170,6 +171,8 @@ export function SnAuthRepositoryProvider({
       } catch (error) {
         if (!isCurrent()) return
         logger.warning({ data: error, message: `Couldn't connect to ${authState.repoUrl}` })
+        setFailedRepositoryUrl(authState.repoUrl)
+        setConfigString(null)
         clearActiveRepositorySelection()
         setAuthState((oldState) => ({ ...oldState, repoUrl: '' }))
       } finally {
@@ -213,15 +216,10 @@ export function SnAuthRepositoryProvider({
           ) : (
             <LoginPage
               isLoginInProgress={isLoginInProgress}
-              repositoryOptions={getSnAuthRepositorySessions()}
-              handleSelectRepository={(repoUrl) => {
-                startSnAuthRepositoryLogin(repoUrl)
-                setAuthState({
-                  repoUrl: normalizeRepositoryUrl(repoUrl),
-                  config: null,
-                })
-              }}
+              initialRepositoryUrl={failedRepositoryUrl}
+              connectionFailed={!!failedRepositoryUrl}
               handleSubmit={(formUrl) => {
+                setFailedRepositoryUrl('')
                 startSnAuthRepositoryLogin(formUrl)
                 setAuthState({
                   repoUrl: normalizeRepositoryUrl(formUrl),
@@ -290,6 +288,7 @@ const RepoProvider = ({
   const { user, externalLogin, logout, accessToken, error, isLoading } = useSnAuth()
   const logger = useLogger('repo-provider')
   const [repo, setRepo] = useState<Repository>()
+  const rememberedRepository = useRef('')
 
   useEffect(() => {
     setRepo((prevRepo) => {
@@ -326,6 +325,10 @@ const RepoProvider = ({
   useEffect(() => {
     if (user && accessToken && authServerUrl) {
       upsertSnAuthRepositorySession(repoUrl, authServerUrl)
+      if (rememberedRepository.current !== repoUrl) {
+        rememberRepositoryConnection(repoUrl)
+        rememberedRepository.current = repoUrl
+      }
     }
   }, [accessToken, authServerUrl, repoUrl, user])
 
