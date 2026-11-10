@@ -13,8 +13,8 @@ export const globals = {
     settingsDrawerWidth: 250,
     addButtonHeight: 40,
     //Colors
-    headerBackground: '#0192db',
-    headerLightBackground: '#0192db',
+    headerBackground: '#0197db',
+    headerLightBackground: '#0197db',
     headerText: 'rgba(255,255,255,0.87)',
     secondaryIconSize: '16px',
     elavationShadow: '1px 1px 3px 0px hsl(0deg 0% 0% / 28%)',

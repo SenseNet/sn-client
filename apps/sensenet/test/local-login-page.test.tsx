@@ -81,6 +81,7 @@ it('renders native controls and repository branding without accepting arbitrary 
 
 it('uses the shared rocket in the default brand panel and footer', () => {
   mount(new LocalRepositorySession(repo, endpoints, jest.fn()))
+  expect((element.querySelector('main') as HTMLElement).style.getPropertyValue('--local-brand')).toBe('#0197db')
   const panelLogo = element.querySelector<HTMLImageElement>('.local-auth-brand img')!
   const footerLogo = element.querySelector<HTMLImageElement>('.local-auth-footer img')!
   expect(panelLogo.getAttribute('src')).toBe('admin-favicon.svg')
@@ -90,12 +91,13 @@ it('uses the shared rocket in the default brand panel and footer', () => {
 it('preserves the repository logo override while keeping the footer on the shared rocket', () => {
   const brandedEndpoints = {
     ...endpoints,
-    appearance: { ...endpoints.appearance, logoUrl: 'https://customer.example/logo.svg' },
+    appearance: { ...endpoints.appearance, brandColor: '#254f78', logoUrl: 'https://customer.example/logo.svg' },
   }
   mount(new LocalRepositorySession(repo, brandedEndpoints, jest.fn()))
   const panelLogo = element.querySelector<HTMLImageElement>('.local-auth-brand img')!
   const footerLogo = element.querySelector<HTMLImageElement>('.local-auth-footer img')!
   expect(panelLogo.getAttribute('src')).toBe('https://customer.example/logo.svg')
+  expect((element.querySelector('main') as HTMLElement).style.getPropertyValue('--local-brand')).toBe('#254f78')
   expect(panelLogo.getAttribute('referrerpolicy')).toBe('no-referrer')
   expect(footerLogo.getAttribute('src')).toBe('admin-favicon.svg')
 })

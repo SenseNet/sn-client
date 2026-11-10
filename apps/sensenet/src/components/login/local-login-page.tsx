@@ -17,7 +17,7 @@ const imageUrl = (value?: string) => {
 export const loginAppearance = (appearance: LocalLoginAppearance = {}) =>
   ({
     '--local-background': color(appearance.backgroundColor, '#d4f3fa'),
-    '--local-brand': color(appearance.brandColor, '#38a9cb'),
+    '--local-brand': color(appearance.brandColor, '#0197db'),
     '--local-button': color(appearance.buttonColor, '#38a9cb'),
     '--local-button-text': color(appearance.buttonTextColor, '#ffffff'),
     '--local-text': color(appearance.textColor, '#343b43'),
