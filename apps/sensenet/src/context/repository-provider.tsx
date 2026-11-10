@@ -2,7 +2,7 @@ import { CssBaseline } from '@material-ui/core'
 import { AuthenticationProvider, useOidcAuthentication, UserManagerSettings } from '@sensenet/authentication-oidc-react'
 import { Repository } from '@sensenet/client-core'
 import { RepositoryContext, useLogger } from '@sensenet/hooks-react'
-import React, { lazy, ReactNode, Suspense, useCallback, useEffect, useState } from 'react'
+import React, { lazy, ReactNode, Suspense, useCallback, useEffect, useRef, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { FullScreenLoader } from '../components/full-screen-loader'
 import { AuthOverrideSkeleton } from '../components/login/auth-override-skeleton'
@@ -12,6 +12,7 @@ import { NotificationComponent } from '../components/NotificationComponent'
 import { useGlobalStyles } from '../globalStyles'
 import { useQuery } from '../hooks'
 import { getAuthConfig } from '../services/auth-config'
+import { rememberRepositoryConnection } from '../services/repository-connections'
 import {
   clearActiveRepositorySelection,
   normalizeRepositoryUrl,
@@ -39,6 +40,7 @@ export function RepositoryProvider({
   prepareAuthentication: (repoUrl: string) => Promise<boolean>
 }) {
   const [isLoginInProgress, setIsLoginInProgress] = useState(false)
+  const [failedRepositoryUrl, setFailedRepositoryUrl] = useState('')
   const [authenticationCheckedFor, setAuthenticationCheckedFor] = useState('')
   const logger = useLogger('repository-provider')
   const globalClasses = useGlobalStyles()
@@ -101,6 +103,7 @@ export function RepositoryProvider({
       } catch (error) {
         if (!isCurrent()) return
         logger.warning({ data: error, message: `Couldn't connect to ${authState.repoUrl}` })
+        setFailedRepositoryUrl(authState.repoUrl)
         clearActiveRepositorySelection()
         setAuthState((oldState) => ({ ...oldState, repoUrl: '' }))
       } finally {
@@ -131,7 +134,10 @@ export function RepositoryProvider({
           ) : (
             <LoginPage
               isLoginInProgress={isLoginInProgress}
+              initialRepositoryUrl={failedRepositoryUrl}
+              connectionFailed={!!failedRepositoryUrl}
               handleSubmit={(formUrl) => {
+                setFailedRepositoryUrl('')
                 setAuthState({
                   repoUrl: normalizeRepositoryUrl(formUrl),
                   config: null,
@@ -191,6 +197,14 @@ const RepoProvider = ({
   const { oidcUser, login, logout, error, errorOperation } = useOidcAuthentication()
   const logger = useLogger('repo-provider')
   const [repo, setRepo] = useState<Repository>()
+  const rememberedRepository = useRef('')
+
+  useEffect(() => {
+    if (oidcUser && !oidcUser.expired && rememberedRepository.current !== repoUrl) {
+      rememberRepositoryConnection(repoUrl)
+      rememberedRepository.current = repoUrl
+    }
+  }, [oidcUser, repoUrl])
 
   useEffect(() => {
     setRepo((prevRepo) => {
