@@ -9,7 +9,7 @@ export function RepositoryDocumentTitle() {
   const { connections } = useRepositoryConnections()
   const repoUrl = normalizeRepositoryUrl(repository.configuration.repositoryUrl)
   const connection = connections.find((item) => item.repoUrl === repoUrl)
-  const title = getRepositoryConnectionName(connection || { repoUrl })
+  const title = `Admin: ${getRepositoryConnectionName(connection || { repoUrl })}`
 
   useEffect(() => {
     const previousTitle = document.title

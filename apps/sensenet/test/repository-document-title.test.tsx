@@ -47,7 +47,7 @@ const mount = (repoUrl = first) => {
 
 it('uses the same URL-derived host, port and path as Recent for an unsaved repository', () => {
   mount(`${first}/?ignored=value#fragment`)
-  expect(document.title).toBe('first.example:8443/tenant')
+  expect(document.title).toBe('Admin: first.example:8443/tenant')
 })
 
 it('uses the custom name of the active repository, independently of global selections in other tabs', () => {
@@ -62,22 +62,22 @@ it('uses the custom name of the active repository, independently of global selec
   )
 
   mount()
-  expect(document.title).toBe('Customer documents')
+  expect(document.title).toBe('Admin: Customer documents')
 })
 
 it('updates after same-tab rename and falls back when the custom name is cleared or the entry removed', () => {
   rememberRepositoryConnection(first)
   mount()
   act(() => renameRepositoryConnection(first, 'Daily repository'))
-  expect(document.title).toBe('Daily repository')
+  expect(document.title).toBe('Admin: Daily repository')
   act(() => renameRepositoryConnection(first, ''))
-  expect(document.title).toBe('first.example:8443/tenant')
+  expect(document.title).toBe('Admin: first.example:8443/tenant')
   act(() => renameRepositoryConnection(first, 'Temporary name'))
-  expect(document.title).toBe('Temporary name')
+  expect(document.title).toBe('Admin: Temporary name')
   act(() => {
     removeRepositoryConnection(first)
   })
-  expect(document.title).toBe('first.example:8443/tenant')
+  expect(document.title).toBe('Admin: first.example:8443/tenant')
 })
 
 it('updates only the active repository name when another tab changes connection metadata', () => {
@@ -91,14 +91,14 @@ it('updates only the active repository name when another tab changes connection 
   act(() => {
     window.dispatchEvent(new StorageEvent('storage', { key: repositoryConnectionsStorageKey }))
   })
-  expect(document.title).toBe('Renamed in another tab')
+  expect(document.title).toBe('Admin: Renamed in another tab')
 
   connections[1].name = 'Unrelated rename'
   localStorage.setItem(repositoryConnectionsStorageKey, JSON.stringify({ version: 1, connections }))
   act(() => {
     window.dispatchEvent(new StorageEvent('storage', { key: repositoryConnectionsStorageKey }))
   })
-  expect(document.title).toBe('Renamed in another tab')
+  expect(document.title).toBe('Admin: Renamed in another tab')
 })
 
 it('changes with the active repository context and restores the base title on leaving the repository', () => {
@@ -107,9 +107,9 @@ it('changes with the active repository context and restores the base title on le
   rememberRepositoryConnection(second)
   renameRepositoryConnection(second, 'Second repository')
   mount()
-  expect(document.title).toBe('First repository')
+  expect(document.title).toBe('Admin: First repository')
   mount(second)
-  expect(document.title).toBe('Second repository')
+  expect(document.title).toBe('Admin: Second repository')
   act(() => {
     unmountComponentAtNode(element)
   })
@@ -120,6 +120,6 @@ it('keeps display names as literal title text', () => {
   rememberRepositoryConnection(first)
   renameRepositoryConnection(first, '<b>Customer & documents</b>')
   mount()
-  expect(document.title).toBe('<b>Customer & documents</b>')
+  expect(document.title).toBe('Admin: <b>Customer & documents</b>')
   expect(document.head.querySelector('b')).toBeNull()
 })
