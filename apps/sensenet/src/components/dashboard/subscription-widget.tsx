@@ -1,8 +1,8 @@
 import { Button, createStyles, Grid, Link, makeStyles, Paper, Typography } from '@material-ui/core'
 import React from 'react'
-import logo from '../../assets/sensenet-icon-32.png'
 import { widgetStyles } from '../../globalStyles'
 import { useLocalization } from '../../hooks'
+import { SensenetLogo } from '../sensenet-logo'
 import { DashboardSubscription, DashboardVersion } from './types'
 import { round } from '.'
 
@@ -42,7 +42,7 @@ export const SubscriptionWidget: React.FunctionComponent<SubscriptionWidgetProps
       </Typography>
       <Grid container justify="space-between" component={Paper} elevation={0} className={widgetClasses.container}>
         <Grid item xs={12} lg="auto" className={classes.statusBox}>
-          <img src={logo} alt="logo" width="29" height="32" />
+          <SensenetLogo />
           <div className={widgetClasses.subtitle}>{props.subscription.plan.displayName}</div>
           {props.subscription.plan.baseprice !== undefined &&
             `(${

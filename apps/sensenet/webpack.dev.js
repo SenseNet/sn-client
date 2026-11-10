@@ -46,7 +46,7 @@ module.exports = (env) => {
       }),
       new HtmlWebpackPlugin({
         template: './index.html',
-        favicon: './src/assets/favicon.ico',
+        favicon: './src/assets/admin-favicon.ico',
       }),
     ],
     module: {

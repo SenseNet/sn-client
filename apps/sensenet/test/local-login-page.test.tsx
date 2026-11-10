@@ -4,6 +4,8 @@ import { act, Simulate } from 'react-dom/test-utils'
 import { LocalLoginPage, loginAppearance } from '../src/components/login/local-login-page'
 import { LocalRepositorySession, localSessionKey } from '../src/services/local-authentication'
 
+jest.mock('../src/assets/admin-favicon.svg', () => 'admin-favicon.svg')
+
 jest.mock('../src/services/repository-session', () => ({
   normalizeRepositoryUrl: (url: string) => url.replace(/\/$/, ''),
 }))
@@ -75,6 +77,54 @@ it('renders native controls and repository branding without accepting arbitrary 
   }) as any
   expect(safe['--local-button']).toBe('#38a9cb')
   expect(safe.backgroundImage).not.toContain('javascript:')
+})
+
+it('uses the shared rocket in the default brand panel and footer', () => {
+  mount(new LocalRepositorySession(repo, endpoints, jest.fn()))
+  expect((element.querySelector('main') as HTMLElement).style.getPropertyValue('--local-brand')).toBe('#0197db')
+  const panelLogo = element.querySelector<HTMLImageElement>('.local-auth-brand img')!
+  const footerLogo = element.querySelector<HTMLImageElement>('.local-auth-footer img')!
+  expect(panelLogo.getAttribute('src')).toBe('admin-favicon.svg')
+  expect(footerLogo.getAttribute('src')).toBe('admin-favicon.svg')
+})
+
+const legacyServerAppearance = {
+  title: 'Login to Test Repository',
+  backgroundColor: '#d4f3fa',
+  brandColor: '#38a9cb',
+  buttonColor: '#38a9cb',
+  buttonTextColor: '#ffffff',
+  textColor: '#343b43',
+  panelColor: '#ffffff',
+}
+
+it.each(['#38a9cb', '#38A9CB'])('updates the stock legacy server panel color %s', (brandColor) => {
+  const appearance = loginAppearance({ ...legacyServerAppearance, brandColor }) as any
+  expect(appearance['--local-brand']).toBe('#0197db')
+  expect(appearance['--local-button']).toBe('#38a9cb')
+})
+
+it.each([
+  { logoUrl: 'https://customer.example/logo.svg' },
+  { backgroundImageUrl: 'https://customer.example/background.png' },
+  { buttonColor: '#254f78' },
+])('preserves the old panel color for customized repository appearance %o', (custom) => {
+  const appearance = loginAppearance({ ...legacyServerAppearance, ...custom }) as any
+  expect(appearance['--local-brand']).toBe('#38a9cb')
+})
+
+it('preserves the repository logo override while keeping the footer on the shared rocket', () => {
+  const brandedEndpoints = {
+    ...endpoints,
+    appearance: { ...endpoints.appearance, brandColor: '#254f78', logoUrl: 'https://customer.example/logo.svg' },
+  }
+  mount(new LocalRepositorySession(repo, brandedEndpoints, jest.fn()))
+  const panelLogo = element.querySelector<HTMLImageElement>('.local-auth-brand img')!
+  const footerLogo = element.querySelector<HTMLImageElement>('.local-auth-footer img')!
+  expect(panelLogo.getAttribute('src')).toBe('https://customer.example/logo.svg')
+  expect((element.querySelector('main') as HTMLElement).style.getPropertyValue('--local-brand')).toBe('#254f78')
+  expect(panelLogo.getAttribute('referrerpolicy')).toBe('no-referrer')
+  expect(footerLogo.getAttribute('src')).toBe('admin-favicon.svg')
 })
 
 it('requires a separate MFA step and never stores the password or challenge', async () => {

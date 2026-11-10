@@ -29,7 +29,6 @@ import MoreHoriz from '@material-ui/icons/MoreHoriz'
 import Storage from '@material-ui/icons/Storage'
 import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
-import snLogo from '../../assets/sensenet_white.png'
 import { globals } from '../../globalStyles'
 import { useLocalization } from '../../hooks'
 import { useRepositoryConnections } from '../../hooks/use-repository-connections'
@@ -42,6 +41,7 @@ import {
   restoreRepositoryConnection,
   setRepositoryConnectionPinned,
 } from '../../services/repository-connections'
+import { SensenetLogo } from '../sensenet-logo'
 
 const recentRepositoryLimit = 6
 
@@ -299,7 +299,7 @@ export default function LoginPage({
     <>
       <AppBar className={classes.appBar}>
         <Link to="/" aria-label="sensenet">
-          <img src={snLogo} alt="sensenet logo" className={classes.logo} />
+          <SensenetLogo className={classes.logo} />
         </Link>
       </AppBar>
       <Container maxWidth="md" className={classes.container}>

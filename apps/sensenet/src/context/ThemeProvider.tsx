@@ -75,7 +75,7 @@ export const ThemeProvider: React.FunctionComponent = (props) => {
         },
         primary: {
           light: '#00B1E4',
-          main: '#0192db',
+          main: '#0197db',
           dark: '#004E8F',
         },
         secondary: {
