@@ -11,6 +11,16 @@ export type RepositoryConnection = {
   lastUsed?: string
 }
 
+export const getRepositoryConnectionName = (connection: Pick<RepositoryConnection, 'repoUrl' | 'name'>): string => {
+  if (connection.name) return connection.name
+  try {
+    const url = new URL(connection.repoUrl)
+    return `${url.host}${url.pathname.replace(/\/$/, '')}`
+  } catch {
+    return connection.repoUrl
+  }
+}
+
 // A denied/quota-limited storage write should not prevent repository selection.
 // Keep changes for this page while still accepting newer persistent data.
 let fallbackConnections: RepositoryConnection[] | undefined

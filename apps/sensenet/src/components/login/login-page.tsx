@@ -34,6 +34,7 @@ import { globals } from '../../globalStyles'
 import { useLocalization } from '../../hooks'
 import { useRepositoryConnections } from '../../hooks/use-repository-connections'
 import {
+  getRepositoryConnectionName,
   parseRepositoryConnectionUrl,
   removeRepositoryConnection,
   renameRepositoryConnection,
@@ -121,16 +122,6 @@ type LoginPageProps = {
   isLoginInProgress: boolean
   initialRepositoryUrl?: string
   connectionFailed?: boolean
-}
-
-const repositoryName = (connection: RepositoryConnection) => {
-  if (connection.name) return connection.name
-  try {
-    const url = new URL(connection.repoUrl)
-    return `${url.host}${url.pathname.replace(/\/$/, '')}`
-  } catch {
-    return connection.repoUrl
-  }
 }
 
 const repositoryDate = (value?: string) => {
@@ -233,7 +224,7 @@ export default function LoginPage({
   const renderConnections = (items: RepositoryConnection[]) => (
     <List disablePadding={true}>
       {items.map((connection) => {
-        const name = repositoryName(connection)
+        const name = getRepositoryConnectionName(connection)
         const date = repositoryDate(connection.lastUsed)
         return (
           <ListItem key={connection.repoUrl} className={classes.row}>
@@ -456,7 +447,7 @@ export default function LoginPage({
               label={localization.repositoryDisplayName}
               name="repositoryDisplayName"
               value={displayName}
-              placeholder={renaming ? repositoryName({ ...renaming, name: undefined }) : undefined}
+              placeholder={renaming ? getRepositoryConnectionName({ ...renaming, name: undefined }) : undefined}
               inputProps={{ maxLength: 80 }}
               disabled={isLoginInProgress}
               onChange={(event) => setDisplayName(event.target.value)}
@@ -476,7 +467,7 @@ export default function LoginPage({
         open={!!removed}
         key={removed?.repoUrl}
         autoHideDuration={6000}
-        message={removed ? localization.repositoryRemovedFromList(repositoryName(removed)) : ''}
+        message={removed ? localization.repositoryRemovedFromList(getRepositoryConnectionName(removed)) : ''}
         onClose={(_event, reason) => {
           if (reason !== 'clickaway') setRemoved(undefined)
         }}
