@@ -14,16 +14,35 @@ const imageUrl = (value?: string) => {
     return undefined
   }
 }
-export const loginAppearance = (appearance: LocalLoginAppearance = {}) =>
-  ({
+const legacyAppearanceColors = {
+  backgroundColor: '#d4f3fa',
+  brandColor: '#38a9cb',
+  buttonColor: '#38a9cb',
+  buttonTextColor: '#ffffff',
+  textColor: '#343b43',
+  panelColor: '#ffffff',
+}
+
+export const loginAppearance = (appearance: LocalLoginAppearance = {}) => {
+  // Older servers send the entire default palette, so a fallback alone cannot update it.
+  // Keep repository branding when any color or image differs from that stock palette.
+  const legacyDefaults =
+    !appearance.logoUrl &&
+    !appearance.backgroundImageUrl &&
+    Object.entries(legacyAppearanceColors).every(([key, expected]) => {
+      const value = appearance[key as keyof LocalLoginAppearance]
+      return value == null || (typeof value === 'string' && value.toLowerCase() === expected)
+    })
+  return {
     '--local-background': color(appearance.backgroundColor, '#d4f3fa'),
-    '--local-brand': color(appearance.brandColor, '#0197db'),
+    '--local-brand': legacyDefaults ? '#0197db' : color(appearance.brandColor, '#0197db'),
     '--local-button': color(appearance.buttonColor, '#38a9cb'),
     '--local-button-text': color(appearance.buttonTextColor, '#ffffff'),
     '--local-text': color(appearance.textColor, '#343b43'),
     '--local-panel': color(appearance.panelColor, '#ffffff'),
     backgroundImage: `url(${JSON.stringify(imageUrl(appearance.backgroundImageUrl) || background)})`,
-  } as React.CSSProperties)
+  } as React.CSSProperties
+}
 
 export function LocalLoginPage({
   repositoryUrl,

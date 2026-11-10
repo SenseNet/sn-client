@@ -88,6 +88,31 @@ it('uses the shared rocket in the default brand panel and footer', () => {
   expect(footerLogo.getAttribute('src')).toBe('admin-favicon.svg')
 })
 
+const legacyServerAppearance = {
+  title: 'Login to Test Repository',
+  backgroundColor: '#d4f3fa',
+  brandColor: '#38a9cb',
+  buttonColor: '#38a9cb',
+  buttonTextColor: '#ffffff',
+  textColor: '#343b43',
+  panelColor: '#ffffff',
+}
+
+it.each(['#38a9cb', '#38A9CB'])('updates the stock legacy server panel color %s', (brandColor) => {
+  const appearance = loginAppearance({ ...legacyServerAppearance, brandColor }) as any
+  expect(appearance['--local-brand']).toBe('#0197db')
+  expect(appearance['--local-button']).toBe('#38a9cb')
+})
+
+it.each([
+  { logoUrl: 'https://customer.example/logo.svg' },
+  { backgroundImageUrl: 'https://customer.example/background.png' },
+  { buttonColor: '#254f78' },
+])('preserves the old panel color for customized repository appearance %o', (custom) => {
+  const appearance = loginAppearance({ ...legacyServerAppearance, ...custom }) as any
+  expect(appearance['--local-brand']).toBe('#38a9cb')
+})
+
 it('preserves the repository logo override while keeping the footer on the shared rocket', () => {
   const brandedEndpoints = {
     ...endpoints,
