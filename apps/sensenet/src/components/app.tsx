@@ -7,6 +7,7 @@ import { ErrorBoundary } from './error-boundary'
 import { DesktopLayout } from './layout/DesktopLayout'
 import { MainRouter } from './MainRouter'
 import { NotificationComponent } from './NotificationComponent'
+import { RepositoryDocumentTitle } from './repository-document-title'
 
 const AppErrorFallback = () => {
   const switchRepository = () => {
@@ -32,6 +33,7 @@ export function App() {
   return (
     <ErrorBoundary FallbackComponent={AppErrorFallback}>
       <AppProviders>
+        <RepositoryDocumentTitle />
         <CssBaseline />
         <StylesProvider injectFirst>
           <DesktopLayout>
