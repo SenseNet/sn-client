@@ -52,6 +52,10 @@
   max-width: 100%;
   height: auto;
 }
+.local-auth-brand .local-auth-default-logo {
+  width: 96px;
+  height: 96px;
+}
 .local-auth-content {
   flex: 1;
   min-width: 0;
@@ -181,8 +185,8 @@
 }
 .local-auth-footer img {
   display: block;
-  width: 98px;
-  height: auto;
+  width: 32px;
+  height: 32px;
 }
 @media (max-width: 720px) {
   .local-auth-screen {

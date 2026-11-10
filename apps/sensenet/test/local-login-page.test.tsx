@@ -4,6 +4,8 @@ import { act, Simulate } from 'react-dom/test-utils'
 import { LocalLoginPage, loginAppearance } from '../src/components/login/local-login-page'
 import { LocalRepositorySession, localSessionKey } from '../src/services/local-authentication'
 
+jest.mock('../src/assets/admin-favicon.svg', () => 'admin-favicon.svg')
+
 jest.mock('../src/services/repository-session', () => ({
   normalizeRepositoryUrl: (url: string) => url.replace(/\/$/, ''),
 }))
@@ -75,6 +77,27 @@ it('renders native controls and repository branding without accepting arbitrary 
   }) as any
   expect(safe['--local-button']).toBe('#38a9cb')
   expect(safe.backgroundImage).not.toContain('javascript:')
+})
+
+it('uses the shared rocket in the default brand panel and footer', () => {
+  mount(new LocalRepositorySession(repo, endpoints, jest.fn()))
+  const panelLogo = element.querySelector<HTMLImageElement>('.local-auth-brand img')!
+  const footerLogo = element.querySelector<HTMLImageElement>('.local-auth-footer img')!
+  expect(panelLogo.getAttribute('src')).toBe('admin-favicon.svg')
+  expect(footerLogo.getAttribute('src')).toBe('admin-favicon.svg')
+})
+
+it('preserves the repository logo override while keeping the footer on the shared rocket', () => {
+  const brandedEndpoints = {
+    ...endpoints,
+    appearance: { ...endpoints.appearance, logoUrl: 'https://customer.example/logo.svg' },
+  }
+  mount(new LocalRepositorySession(repo, brandedEndpoints, jest.fn()))
+  const panelLogo = element.querySelector<HTMLImageElement>('.local-auth-brand img')!
+  const footerLogo = element.querySelector<HTMLImageElement>('.local-auth-footer img')!
+  expect(panelLogo.getAttribute('src')).toBe('https://customer.example/logo.svg')
+  expect(panelLogo.getAttribute('referrerpolicy')).toBe('no-referrer')
+  expect(footerLogo.getAttribute('src')).toBe('admin-favicon.svg')
 })
 
 it('requires a separate MFA step and never stores the password or challenge', async () => {

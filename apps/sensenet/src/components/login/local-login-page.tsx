@@ -1,7 +1,7 @@
 import React, { FormEvent, useEffect, useRef, useState } from 'react'
 import { LocalLoginAppearance, LocalMfaChallenge, LocalRepositorySession } from '../../services/local-authentication'
+import { SensenetLogo } from '../sensenet-logo'
 import background from './assets/local-auth-background.png'
-import logo from './assets/local-auth-logo.svg'
 import './local-login-page.css'
 
 const color = (value: unknown, fallback: string) =>
@@ -57,6 +57,7 @@ export function LocalLoginPage({
   const [failure, setFailure] = useState('')
   const [notice, setNotice] = useState('')
   const appearance = session?.endpoints.appearance
+  const repositoryLogo = imageUrl(appearance?.logoUrl)
   const title = typeof appearance?.title === 'string' ? appearance.title.slice(0, 120) : 'Login to sensenet'
   const busy = working || loading
   const disabled = busy || !session
@@ -136,7 +137,11 @@ export function LocalLoginPage({
     <main className="local-auth-screen" style={loginAppearance(appearance)}>
       <section className="local-auth-card" aria-labelledby="local-auth-title" aria-busy={busy}>
         <aside className="local-auth-brand">
-          <img src={imageUrl(appearance?.logoUrl) || logo} alt="Repository logo" referrerPolicy="no-referrer" />
+          {repositoryLogo ? (
+            <img src={repositoryLogo} alt="Repository logo" referrerPolicy="no-referrer" />
+          ) : (
+            <SensenetLogo className="local-auth-default-logo" />
+          )}
         </aside>
         <div className="local-auth-content">
           <h1 id="local-auth-title">{heading}</h1>
@@ -285,7 +290,7 @@ export function LocalLoginPage({
         </div>
       </section>
       <div className="local-auth-footer">
-        <img src={logo} alt="sensenet" />
+        <SensenetLogo />
       </div>
     </main>
   )

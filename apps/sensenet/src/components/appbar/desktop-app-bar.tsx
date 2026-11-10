@@ -4,12 +4,12 @@ import { useLogger, useRepository } from '@sensenet/hooks-react'
 import { clsx } from 'clsx'
 import React, { useContext, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import logo from '../../assets/sensenet_white.png'
 import { ResponsiveContext, ResponsivePersonalSettings } from '../../context'
 import { globals, useGlobalStyles } from '../../globalStyles'
 import { useLocalization } from '../../hooks'
 import { loadRepositorySettings } from '../../services/repository-settings-service'
 import { CommandPalette } from '../command-palette/CommandPalette'
+import { SensenetLogo } from '../sensenet-logo'
 import { DesktopNavMenu } from './desktop-nav-menu'
 import '../drawer/app-navigation.css'
 
@@ -111,7 +111,7 @@ export const DesktopAppBar: React.FunctionComponent<{ openDrawer?: () => void; d
       <Toolbar className={classes.toolBar}>
         <div className={globalClasses.centeredVertical}>
           <Link to="/" className={`${globalClasses.centeredVertical} ${classes.logo}`}>
-            <img src={logo} alt="logo" data-test="sensenet-logo" width="29" height="32" />
+            <SensenetLogo data-test="sensenet-logo" />
           </Link>
           {personalSettings.drawer.enabled && (personalSettings.drawer.type === 'temporary' || device === 'mobile') ? (
             <button
